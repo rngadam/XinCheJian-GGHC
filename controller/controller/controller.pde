@@ -1,8 +1,6 @@
 
-#include <Servo.h> 
- 
-Servo servo_sideways; 
-Servo servo_updown; 
+#include <Servo.h>
+#include "CustomServo.h"
 
 const byte SIDEWAYS = 'S';
 const byte UPDOWN = 'U';
@@ -13,25 +11,16 @@ const byte SIDEWAYS_MAX_POS = 160;
 const byte UPDOWN_MIN_POS = 50;
 const byte UPDOWN_DEFAULT_POS = 135; 
 const byte UPDOWN_MAX_POS = 180;
+const byte SIDEWAYS_PIN = 9;
+const byte UPDOWN_PIN = 10;
+
+CustomServo servo_sideways(SIDEWAYS_PIN, SIDEWAYS_MIN_POS, SIDEWAYS_MAX_POS, SIDEWAYS_DEFAULT_POS); 
+CustomServo servo_updown(UPDOWN_PIN,  UPDOWN_MIN_POS, UPDOWN_MAX_POS, UPDOWN_DEFAULT_POS); 
 
 void setup() 
 { 
-  Serial.begin(9600);
-  servo_sideways.attach(9); 
-  servo_updown.attach(10); 
-  servo_sideways.write(SIDEWAYS_DEFAULT_POS);
-  servo_updown.write(UPDOWN_DEFAULT_POS);  
+  Serial.begin(9600);  
 } 
-
-void writeServoLimits(Servo& servo, byte min_value, byte max_value, byte value) 
-{
-  if(value >= min_value && value <= max_value) {
-    servo.write(value);
-  } else {
-    Serial.print("Value exceeds limits: ");
-    Serial.print(value, DEC);
-  }
-}
 
 byte readDigitValue() 
 {
@@ -46,28 +35,21 @@ byte readDegrees()
   return readDigitValue()*100 + readDigitValue()*10 + readDigitValue();
 }
 
-byte value;
-byte inByte;
-
 void loop() 
 { 
-  if (Serial.available() > 0) {
-    // get incoming byte:
-    byte value = Serial.read();
-  
-    switch(value) {
+  if (Serial.available() > 0) {  
+    switch(Serial.read()) {
       case 'S':
-        value = readDegrees();
-        writeServoLimits(servo_sideways, SIDEWAYS_MIN_POS, SIDEWAYS_MAX_POS, value);
+        servo_sideways.set_target(readDegrees());
         break;
       case 'U':
-        value = readDegrees();
-        writeServoLimits(servo_updown, UPDOWN_MIN_POS, UPDOWN_MAX_POS, value);
+        servo_sideways.set_target(readDegrees());
         break;
       default:
         Serial.println("Unrecognized value");
         break;
     }
-    
   }  
+  servo_sideways.update_pos();
+  servo_updown.update_pos();
 } 
