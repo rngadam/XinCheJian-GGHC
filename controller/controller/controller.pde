@@ -1,4 +1,3 @@
-
 #include <Servo.h>
 #include "CustomServo.h"
 
@@ -14,12 +13,14 @@ const byte UPDOWN_MAX_POS = 180;
 const byte SIDEWAYS_PIN = 9;
 const byte UPDOWN_PIN = 10;
 
-CustomServo servo_sideways(SIDEWAYS_PIN, SIDEWAYS_MIN_POS, SIDEWAYS_MAX_POS, SIDEWAYS_DEFAULT_POS); 
-CustomServo servo_updown(UPDOWN_PIN,  UPDOWN_MIN_POS, UPDOWN_MAX_POS, UPDOWN_DEFAULT_POS); 
+CustomServo servo_sideways = CustomServo(SIDEWAYS_PIN, SIDEWAYS_MIN_POS, SIDEWAYS_MAX_POS, SIDEWAYS_DEFAULT_POS);
+CustomServo servo_updown = CustomServo(UPDOWN_PIN,  UPDOWN_MIN_POS, UPDOWN_MAX_POS, UPDOWN_DEFAULT_POS);
 
 void setup() 
 { 
   Serial.begin(9600);  
+  servo_sideways.setup();
+  servo_updown.setup();
 } 
 
 byte readDigitValue() 
@@ -43,7 +44,7 @@ void loop()
         servo_sideways.set_target(readDegrees());
         break;
       case 'U':
-        servo_sideways.set_target(readDegrees());
+        servo_updown.set_target(readDegrees());
         break;
       default:
         Serial.println("Unrecognized value");

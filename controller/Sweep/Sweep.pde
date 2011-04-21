@@ -13,16 +13,17 @@ void setup()
  
 void loop() 
 { 
-  for(int pos = 0; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees 
-  {                                  // in steps of 1 degree 
-    servo_sideways.write(pos);              // tell servo to go to position in variable 'pos' 
-    servo_updown.write(pos/2+45);              // tell servo to go to position in variable 'pos' 
-    delay(15);                       // waits 15ms for the servo to reach the position 
+  for(int pos = 20; pos < 160; pos += 1) 
+  {                                   
+    servo_sideways.write(pos);        
+    delay(15);                       
   } 
-  for(int pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
-  {                                
-    servo_sideways.write(pos);              // tell servo to go to position in variable 'pos' 
-    servo_updown.write(pos/2+45);              // tell servo to go to position in variable 'pos' 
-    delay(15);                       // waits 15ms for the servo to reach the position 
+  servo_sideways.write(90);
+  
+  for(int pos = 50; pos < 180; pos += 1) 
+  {                                   
+    servo_updown.write(pos);        
+    delay(15);                       
   } 
+  servo_updown.write(105);
 } 
