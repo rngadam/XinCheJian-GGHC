@@ -1,7 +1,7 @@
 #ifndef CUSTOM_SERVO_H
 #define CUSTOM_SERVO_H
 
-#include <Servo.h>
+#include <PWMServo.h>
 #include "WProgram.h"
 
 const byte UPDATE_INTERVAL_MS = 15;
@@ -15,6 +15,7 @@ public:
   void set_target(byte pos);
   void update_pos();
   void setup();
+  void disable_filtering();
 private:
   byte _min;
   byte _max;
@@ -25,6 +26,7 @@ private:
   byte _array_ptr;
   byte _default_value;
   byte _pin;
-  Servo _servo;
+  boolean _filtering;
+  PWMServo _servo;
 };
 #endif

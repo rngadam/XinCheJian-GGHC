@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:orientation="vertical">
+    <TextView android:text="@string/Sideways" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LabelSideways"></TextView>
+    <TextView android:text="TextView" android:id="@+id/CurrentYAxis" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <SeekBar android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/SidewaysSeekBar" android:clickable="true"></SeekBar>
+    <TextView android:text="@string/UpDown" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LabelUpDown"></TextView>
+    <TextView android:text="TextView" android:id="@+id/CurrentXAxis" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/UpDownSeekBar" android:clickable="true"></SeekBar>
+    </LinearLayout>
+</LinearLayout>

@@ -8,15 +8,21 @@ CustomServo::CustomServo(byte pin, byte min_value, byte max_value, byte default_
   _target_pos = default_value;
   _default_value = default_value;
   _pin = pin;
+  _filtering = true;
+}
+
+void CustomServo::disable_filtering() 
+{
+  _filtering = false;
 }
 
 void CustomServo::setup() 
 {
-  _servo = Servo();
+  _servo = PWMServo();
   Serial.print("Attaching servo to pin ");
-  Serial.print(_pin);
+  Serial.print(_pin, DEC);
   Serial.print(" and writing: ");
-  Serial.println(_default_value);
+  Serial.println(_default_value, DEC);
   _servo.attach(_pin);
   _servo.write(_default_value);  
 }
@@ -46,6 +52,11 @@ void CustomServo::update_pos()
   if(_next_pos == _target_pos)
     return;
     
+  if(!_filtering) {
+    _servo.write(_target_pos);
+    _next_pos = _target_pos;
+    return;
+  }
   // is it time to update yet?
   if((millis() - _last_update_ms) >= UPDATE_INTERVAL_MS) {
     // we've reached final deceleration position, put it exactly to target pos
@@ -70,6 +81,7 @@ void CustomServo::update_pos()
     Serial.println(_servo.read(), DEC);
 
     _last_update_ms = millis();
+
   }
 }
 
