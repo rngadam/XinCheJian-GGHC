@@ -34,7 +34,6 @@ public class Camcorder  {
     	ParcelFileDescriptor fd = ParcelFileDescriptor.fromSocket(clientSocket);
     	recorder.setOutputFile(fd.getFileDescriptor());
     	recorder.setOutputFile(outputFile);
-		recorder.setPreviewDisplay(holder.getSurface());
 		if (recorder != null) {
 			try {
 				recorder.prepare();

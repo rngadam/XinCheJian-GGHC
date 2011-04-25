@@ -6,13 +6,13 @@ import java.net.UnknownHostException;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class VideoServerTest extends Activity implements SurfaceHolder.Callback {
 	private static final int port = 9999;
 	private Camcorder camcorder;
-	private String TAG = VideoServerTest.class.getSimpleName();
 
 	@Override
 	protected void onDestroy() {
@@ -33,25 +33,31 @@ public class VideoServerTest extends Activity implements SurfaceHolder.Callback 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         
     }
+    
 	@Override
 	public void surfaceChanged(SurfaceHolder surfaceHolder, int arg1, int arg2, int arg3) {
-		camcorder.startRecordingToDisk("/sdcard/test.mp4", surfaceHolder);        
+		camcorder.setSurfaceHolder(surfaceHolder);
+		if(camcorder.isConnected()) {
+			camcorder.startRecording();
+		}
 	}
+	
 	@Override
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
 		try {
 			camcorder = new Camcorder(port);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(this.getClass().getSimpleName(), "Invalid host", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(this.getClass().getSimpleName(), "Could not start camcorder", e);
 		}		
+		camcorder.setSurfaceHolder(surfaceHolder);
+		camcorder.startRecordingToNetwork();
 	}
 	@Override
 	public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 		camcorder.stopRecording();
+		camcorder.setSurfaceHolder(null);
 	}
     
 }

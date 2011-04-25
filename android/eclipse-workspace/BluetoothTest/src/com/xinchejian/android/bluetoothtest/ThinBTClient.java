@@ -27,9 +27,15 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 	
 	private static final String TAG = "THINBTCLIENT";
 	private static final boolean D = true;
-	private static final byte Z_AXIS = 'S'; // left/right
-	private static final byte X_AXIS = 'U'; // up/down
-	private static final int UPDATE_STUFF_ON_DIALOG = 999;
+	private static final char Z_AXIS = 'S'; // left/right
+	private static final char X_AXIS = 'U'; // up/down
+	private static final int UPDATE_TASK_ON_TIMER = 999;
+	private static final int SIDEWAYS_MIN_POS = 20;
+	private static final int SIDEWAYS_DEFAULT_POS = 90; 
+	private static final int SIDEWAYS_MAX_POS = 160;
+	private static final int UPDOWN_MIN_POS = 55;
+	private static final int UPDOWN_DEFAULT_POS = 135; 
+	private static final int UPDOWN_MAX_POS = 180;
 	
 	private BluetoothAdapter mBluetoothAdapter = null;
 	private BluetoothSocket btSocket = null;
@@ -51,8 +57,8 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 
 	// ==> hardcode your server's MAC address here <==
 	private static String address = "00:11:03:14:02:02";
-	private int z_axis = 90;
-	private int x_axis = 135;
+	private int z_axis = SIDEWAYS_DEFAULT_POS;
+	private int x_axis = UPDOWN_DEFAULT_POS;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -86,8 +92,8 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 		
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);		
-        handlerTimer.removeCallbacks(taskUpdateStuffOnDialog );
-        handlerTimer.postDelayed(taskUpdateStuffOnDialog , 1000); 
+        handlerTimer.removeCallbacks(taskTimerUpdate );
+        handlerTimer.postDelayed(taskTimerUpdate , 1000); 
         
         updateViews();
         updateValues();
@@ -98,18 +104,20 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 		currentZAxis = (TextView) findViewById(R.id.CurrentYAxis);		
 		xAxisSeekBar = (SeekBar) findViewById(R.id.UpDownSeekBar);
 		zAxisSeekBar = (SeekBar) findViewById(R.id.SidewaysSeekBar);
-		xAxisSeekBar.setMax(180);
-		zAxisSeekBar.setMax(180);
+		xAxisSeekBar.setMax(UPDOWN_MAX_POS);
+		zAxisSeekBar.setMax(SIDEWAYS_MAX_POS);
 		xAxisSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
-					if(fromUser) {
+				if(fromUser) {
+					if(progress < UPDOWN_MIN_POS)
+						x_axis =  UPDOWN_MIN_POS;
+					else
 						x_axis = progress;
-						sendMessage(X_AXIS, x_axis);
-					}
-					updateValues();
+				}
+				updateValues();
 			}
 
 			@Override
@@ -120,8 +128,7 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				
+				sendMessage(X_AXIS, x_axis);
 			}
 		});
 		zAxisSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -130,8 +137,10 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 					if(fromUser) {
-						z_axis = progress;
-						sendMessage(Z_AXIS, z_axis);
+						if(progress < SIDEWAYS_MIN_POS)
+							z_axis = SIDEWAYS_MIN_POS;
+						else
+							z_axis = progress;
 					}
 					updateValues();					
 			}
@@ -144,8 +153,7 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				
+				sendMessage(Z_AXIS, z_axis);	
 			}
 		});		
 	}
@@ -157,7 +165,7 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 		zAxisSeekBar.setProgress(z_axis);
 	}
 	
-	private Runnable taskUpdateStuffOnDialog = new Runnable() {
+	private Runnable taskTimerUpdate = new Runnable() {
 	       public void run() {      
 	            // handling be in the dialog
 	            // don't mess with GUI from within a thread
@@ -173,7 +181,7 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 	    	   //sendMessage(Z_AXIS, z_axis);
 	    	   
 	            Message msg = new Message();
-	            msg.what = UPDATE_STUFF_ON_DIALOG;
+	            msg.what = UPDATE_TASK_ON_TIMER;
 	            //handlerEvent.sendMessage(msg);  
 	            handlerTimer.postDelayed(this, 1000);
 	    }
@@ -271,26 +279,39 @@ public class ThinBTClient extends Activity implements SensorEventListener  {
 		}
 	}
 
-	private void sendMessage(byte axis, int value) {
+	private synchronized void sendMessage(char axis, int value) {
 		if(outStream == null) {
 			connectBluetooth();
 			return;
 		}
-		formatter.format("%1c%03d%d", axis, value, value % 9);
+		// examples: U00900, S01800, etc
+		formatter.format("%c0%03d0%d", axis, value, value % 9);
 		try {
 			byte[] msgBuffer;
 			String string = formatted_output.toString();
 			Log.d(TAG, "sending: " + string);
 			msgBuffer = string.getBytes("ISO-8859-1");
-			formatted_output.delete(0, formatted_output.length());
-			for(int i=0; i<msgBuffer.length; i++) {
-				Log.d(TAG, "value : " + msgBuffer[i]);
-				outStream.write(msgBuffer[i]);
+			if(msgBuffer.length != 7) {
+				throw new RuntimeException("Unexpected bytes output for: " + string);
 			}
-			outStream.flush();
+			for(int i=0; i<msgBuffer.length; i++) {
+				outStream.write(msgBuffer[i]);	
+				outStream.flush();
+				// since there's no flow control (CTS/RTS), we need to temper
+				// how fast we send things...
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			formatted_output.delete(0, formatted_output.length());
 		} catch (IOException e) {
-			Log.e(TAG, "ON RESUME: Exception during write.", e);
+			Log.e(TAG, "Exception during write.", e);
 			outStream = null;
+			connectBluetooth();			
 			return;
 		} 
 
