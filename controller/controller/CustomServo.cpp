@@ -53,6 +53,7 @@ void CustomServo::update_pos()
     return;
     
   if(!_filtering) {
+    Serial.println("Direct write of " + _target_pos);
     _servo.write(_target_pos);
     _next_pos = _target_pos;
     return;
