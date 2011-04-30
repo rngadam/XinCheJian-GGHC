@@ -13,8 +13,8 @@ import android.view.View;
 
 public class MainActivity extends Activity implements InformationSource {
 	private WifiManager wifiManager;
-	private Handler mHandler = new Handler();
 	private GraphicsView graphicsView;
+	private Handler mHandler = new Handler();
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {

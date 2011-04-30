@@ -9,14 +9,15 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-public class Camcorder  {
+public class Camcorder {
 
 	MediaRecorder recorder;
 	SurfaceHolder holder;
 	String outputFile;
 	private Socket clientSocket;
 
-	public Camcorder(String ip, int port) throws UnknownHostException, IOException {
+	public Camcorder(String ip, int port) throws UnknownHostException,
+			IOException {
 		clientSocket = new Socket(ip, port);
 		recorder = new MediaRecorder();
 		recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -29,11 +30,10 @@ public class Camcorder  {
 		// recorder.setMaxDuration(10000);
 	}
 
-    public void startRecording()
-    {
-    	ParcelFileDescriptor fd = ParcelFileDescriptor.fromSocket(clientSocket);
-    	recorder.setOutputFile(fd.getFileDescriptor());
-    	recorder.setOutputFile(outputFile);
+	public void startRecording() {
+		ParcelFileDescriptor fd = ParcelFileDescriptor.fromSocket(clientSocket);
+		recorder.setOutputFile(fd.getFileDescriptor());
+		recorder.setOutputFile(outputFile);
 		if (recorder != null) {
 			try {
 				recorder.prepare();
@@ -44,12 +44,11 @@ public class Camcorder  {
 			}
 		}
 
-    	recorder.start();
-    }
-    
-    public void stopRecording()
-    {
-    	recorder.stop();
-    	recorder.release();
-    }
+		recorder.start();
+	}
+
+	public void stopRecording() {
+		recorder.stop();
+		recorder.release();
+	}
 }
