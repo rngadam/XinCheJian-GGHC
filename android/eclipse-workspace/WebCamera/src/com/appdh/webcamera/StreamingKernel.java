@@ -48,7 +48,6 @@ public class StreamingKernel implements Runnable
 	
 	public void repareStreaming()
 	{
-		loopback.initLoopback();
 		videoBuffer.reset();
 		frameTimeStamp.reset(frameDuration);
 	}
@@ -80,6 +79,7 @@ public class StreamingKernel implements Runnable
 
 	public void run()
 	{
+
 		realRun();	
 		Log.e(TAG, "Streaming aborted due to loop return, closing");
 		loopback.releaseLoopback();
@@ -119,7 +119,7 @@ public class StreamingKernel implements Runnable
 		try {
 			Log.d(TAG, "Found after reading " + MediaDetect.checkMP4_MDAT(fis) + " bytes");
 		} catch (IOException e) {
-			Log.d(TAG, "Could not find header!",e );
+			Log.e(TAG, "Could not find header!",e );
 			return;
 		}
 		Log.d(TAG, "First frame duration computing");

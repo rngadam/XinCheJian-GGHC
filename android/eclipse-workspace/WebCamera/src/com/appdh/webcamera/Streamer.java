@@ -104,14 +104,20 @@ public class Streamer {
         IsoBufferWrapper isoBufferWrapper;
 		try {
 			isoBufferWrapper = new IsoBufferWrapper(new File(autodetection_filename));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
+			Log.e(TAG, "Could not open file " + autodetection_filename, e);			
+			return false;
+		} catch (IOException e) {
 			Log.e(TAG, "Could not open file " + autodetection_filename, e);			
 			return false;
 		}
         IsoFile isoFile = new IsoFile(isoBufferWrapper);
         try {
 			isoFile.parse();
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
+			Log.e(TAG, "Could not parse file " + autodetection_filename, e);			
+			return false;
+		} catch (IOException e) {
 			Log.e(TAG, "Could not parse file " + autodetection_filename, e);			
 			return false;
 		}

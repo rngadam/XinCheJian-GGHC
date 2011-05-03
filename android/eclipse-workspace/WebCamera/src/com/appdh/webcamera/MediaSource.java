@@ -79,16 +79,21 @@ public class MediaSource {
 	public void startCapture()
 	{
 		if(!bInited) {
+			Log.e(TAG, "Cannot start capture, not initialized!");
 			return;
 		}
+		
 		mRecorder.start();
+		
 		bStreaming = true;
 	}
 	
 	public void stopCapture()
 	{
-		mRecorder.stop();
-		releaseMedia();
+		if(mRecorder != null) {
+			mRecorder.stop();
+			releaseMedia();
+		}
 	}
 	
 	public boolean initMedia()
@@ -128,7 +133,6 @@ public class MediaSource {
 	        mRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 	        mRecorder.setVideoFrameRate(27);
 	        mRecorder.setVideoSize(640, 480);   
-	        
 		} catch(RuntimeException e) {
 			Log.e(TAG, "Could not set camera settings",e );
 			return;
@@ -138,6 +142,7 @@ public class MediaSource {
 		{			
 			mRecorder.setPreviewDisplay(mViewer.holder.getSurface());
 		} else {
+			Log.e(TAG, "No surface available to set as preview");
 			return;
 		}
         bInited = true;

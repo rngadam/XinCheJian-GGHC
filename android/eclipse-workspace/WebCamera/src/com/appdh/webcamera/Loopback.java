@@ -75,6 +75,9 @@ public class Loopback {
 	
 	FileDescriptor getTargetFileDescriptor()
 	{
+		if(sender == null) {
+			throw new IllegalStateException("Cannot return file descriptor as sender is unitialized (Call initLoopback first)");
+		}
 		return sender.getFileDescriptor();
 	}
 
