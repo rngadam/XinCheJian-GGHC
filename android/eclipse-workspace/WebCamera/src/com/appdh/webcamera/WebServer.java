@@ -8,47 +8,58 @@ import android.util.Log;
 
 
 class WebServer implements Runnable{
+
 	/*Do streaming object*/
-	public static StreamingHandler streamingHandler = null;
+	protected final StreamingHandler streamingHandler;
 	
 	/* Where worker threads stand idle */
-    static Vector<Worker> threads = new Vector<Worker>();
-    static Worker currentStreamingWorker = null;
+    protected static Vector<Worker> threads = new Vector<Worker>();
+    protected static Worker currentStreamingWorker = null;
 
     /* timeout on client connections */
-    int timeout = 5000;
+    protected int timeout = 5000;
+
+	private boolean isRunning = false;
 
 	private final static String TAG = WebServer.class.getSimpleName();
-
     /* max # worker threads */
-    static int workers = 5;
+	protected static int workers = 5;
     
     /* Working directory*/
-    static File root;
+	protected static File root;
+    public WebServer(StreamingHandler streamingHandler) {
+    	super();
+    	this.streamingHandler = streamingHandler;
+    }
     
-    static void prepare(){    
+    private void prepare(){    
     	/* start worker threads */
         for (int i = 0; i < workers; ++i) {
-            Worker w = new Worker();
+            Worker w = new Worker(streamingHandler);
             (new Thread(w, "worker #"+i)).start();
             threads.addElement(w);
         }
         root = new File("/sdcard/webcamera/");
     }
 
+    public void stop() {
+    	isRunning = false;
+    }
+    
     public synchronized void run() {
         final int port = 8080;
         
         prepare();        
         try{
         	ServerSocket ss = new ServerSocket(port);
-	        while (true) {	
+        	isRunning = true;
+	        while (isRunning) {	
 	            Socket s = ss.accept();
 	            Log.d(this.getClass().getSimpleName(), "Accept a Client");
 	            Worker w = null;
 	            synchronized (threads) {
 	                if (threads.isEmpty()) {
-	                    Worker ws = new Worker();
+	                    Worker ws = new Worker(streamingHandler);
 	                    ws.setSocket(s);
 	                    (new Thread(ws, "additional worker")).start();
 	                } else {
@@ -107,7 +118,8 @@ class Worker extends WebServer implements HttpConstants, Runnable {
     /* Socket to client we're handling */
     private Socket s;
 
-    Worker() {
+    public Worker(StreamingHandler handler) {
+    	super(handler);
         buf = new byte[BUF_SIZE];
         s = null;
     }

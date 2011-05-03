@@ -49,12 +49,12 @@ public class MainActivity extends Activity implements StreamingHandler
 	//主要控制对象
 	OverlayView mOverlayView;				//叠加显示View
 	CameraView	mCameraView;				//Live图像View对象
+	
+	// Streaming
 	MediaSource mMediaSource;				//视频处理对象
 	boolean mSetuped;						//是否检测过录像
-	
 	StreamingKernel mStreamingKernel;		//获取视频流的对象
 	Thread	  mStreamingKernelThread;		//获取视频流的对象，线程对象
-	
 	WebServer mWebServer;					//内置WebServer对象
 	Thread	  mWebServerThread;				//内置WebServer对象,线程对象	
 	Streamer mStreamer;
@@ -68,7 +68,6 @@ public class MainActivity extends Activity implements StreamingHandler
 	Timer rePrepareStreamTimer;
 	Timer relayMessageTimer;
 	private Handler mHandler = new Handler();
-	private int mdatOffset;
 	
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
@@ -403,11 +402,11 @@ public class MainActivity extends Activity implements StreamingHandler
 		disableButton(btnSetup);
 		
 		//启动 Web服务对象
-		mWebServer = new WebServer();		
-		WebServer.streamingHandler = MainActivity.this;
+		mWebServer = new WebServer(MainActivity.this);		
 		mWebServerThread = new Thread( mWebServer );
 		mWebServerThread.start();
 		String url = "http:/" + WebServer.getInterfaces() + ":8080";
+		
 		mOverlayView.addMessage( (MainActivity.this).getString(R.string.start_server) + url);
 		mOverlayView.postInvalidate();
 		
@@ -436,7 +435,7 @@ public class MainActivity extends Activity implements StreamingHandler
     {
 		@Override
 		public void onClick(View v) {
-			System.exit(0);
+			finish();
 		}
     };
 

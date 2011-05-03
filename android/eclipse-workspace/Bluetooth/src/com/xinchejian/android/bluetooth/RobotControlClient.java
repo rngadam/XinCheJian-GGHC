@@ -57,7 +57,7 @@ public class RobotControlClient implements Runnable {
 	                 // where you issue the commands
 	                 if(!commands.isEmpty()) {
 	                	String command = commands.remove(0);
-						out.write(command);
+						out.write(command + '\n');
 						Log.d(TAG, "Sent  " + command);
 	                 }
 	                 sleep(200);

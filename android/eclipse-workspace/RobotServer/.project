@@ -37,5 +37,10 @@
 			<type>2</type>
 			<locationURI>_android_Bluetooth_eccce28e/src</locationURI>
 		</link>
+		<link>
+			<name>WebCamera_src</name>
+			<type>2</type>
+			<locationURI>_android_WebCamera_1719cb79/src</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

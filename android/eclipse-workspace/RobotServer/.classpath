@@ -5,5 +5,7 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Bluetooth"/>
 	<classpathentry kind="src" path="Bluetooth_src"/>
+	<classpathentry kind="src" path="WebCamera_src"/>
+	<classpathentry kind="lib" path="/WebCamera/libs/isoparser.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

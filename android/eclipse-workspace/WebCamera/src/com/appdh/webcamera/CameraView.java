@@ -12,6 +12,12 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback
 	public SurfaceHolder holder;
     public boolean hasSurface = false;       
     
+    public CameraView(Context context) 
+    {
+        super(context);
+        initSurface();            
+    }    
+    
     public CameraView(Context context, AttributeSet attrs) 
     {
         super(context,attrs);

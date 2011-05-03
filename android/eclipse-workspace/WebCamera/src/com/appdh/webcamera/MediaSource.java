@@ -137,6 +137,8 @@ public class MediaSource {
         if(mViewer.hasSurface)
 		{			
 			mRecorder.setPreviewDisplay(mViewer.holder.getSurface());
+		} else {
+			return;
 		}
         bInited = true;
         Log.d(TAG,"init Camera setting is OK! ");

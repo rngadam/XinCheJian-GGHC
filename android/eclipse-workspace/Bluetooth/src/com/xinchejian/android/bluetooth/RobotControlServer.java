@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class RobotControlServer implements Runnable {
 	private static final String TAG = RobotControlServer.class.getSimpleName();
-	public static final int SERVERPORT = 8080;
+	public static final int SERVERPORT = 9090;
 	private final RobotControl robotControl;
 	private boolean connected;
 	
