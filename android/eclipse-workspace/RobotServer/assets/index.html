@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+	<title>Tele-Presence Robot Client</title>
+
+	<style type="text/css">
+		body { background-color: #fff; padding: 0 20px; color:#000; font: 13px/18px Arial, sans-serif; }
+		a { color: #360; }
+		h3 { padding-top: 20px; }
+		ol { margin:5px 0 15px 16px; padding:0; list-style-type:square; }
+	</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	
+	<script src="swfobject.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var flashvars = {
+		};
+		var params = {
+			menu: "false",
+			scale: "noScale",
+			allowFullscreen: "false",
+			allowScriptAccess: "always",
+			bgcolor: "#FFFFFF"
+		};
+		var attributes = {
+			id:"robotControler"
+		};
+		swfobject.embedSWF("robotAir.swf", "robotControler", "600", "400", "10.0.0", "expressInstall.swf", flashvars, params, attributes);
+		/***
+		* ÃƒÂ¤Ã‚Â½Ã‚Â¿ÃƒÂ§Ã¢â‚¬ï¿½Ã‚Â¨ÃƒÂ¥Ã¯Â¿Â½Ã¯Â¿Â½ÃƒÂ¦Ã‚Â Ã¢â‚¬Â¡ ÃƒÂ¦Ã…Â½Ã‚Â§ÃƒÂ¥Ã‹â€ Ã‚Â¶ÃƒÂ§Ã…â€œÃ‚Â¼ÃƒÂ§Ã¯Â¿Â½Ã¢â‚¬Âº
+		*/
+		function eyeMove(value){
+			/**
+			// alleye (default)2ÃƒÂ¥Ã¯Â¿Â½Ã‚ÂªÃƒÂ§Ã…â€œÃ‚Â¼ leye ÃƒÂ¥Ã‚Â·Ã‚Â¦ÃƒÂ§Ã…â€œÃ‚Â¼ reye ÃƒÂ¥Ã¯Â¿Â½Ã‚Â³ÃƒÂ§Ã…â€œÃ‚Â¼
+			data.type = alleye;
+			//ÃƒÂ§Ã…â€œÃ‚Â¼ÃƒÂ§Ã¯Â¿Â½Ã¢â‚¬ÂºÃƒÂ§Ã‚Â§Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¨ÃƒÂ§Ã…Â¡Ã¢â‚¬Å¾ÃƒÂ¥Ã¯Â¿Â½Ã¯Â¿Â½ÃƒÂ¦Ã‚Â Ã¢â‚¬Â¡
+			data.eyex = 0;
+			data.eyey = 0;
+			//ÃƒÂ§Ã…â€œÃ‚Â¼ÃƒÂ§Ã¯Â¿Â½Ã¢â‚¬ÂºÃƒÂ¦Ã‚Â¯Ã¢â‚¬ï¿½ÃƒÂ¤Ã‚Â¾Ã¢â‚¬Â¹ 0.1-2
+			data.eyes = 1;
+			//ÃƒÂ§Ã‚Â§Ã‚Â»ÃƒÂ¥Ã…Â Ã‚Â¨ÃƒÂ¦Ã¢â‚¬â€�Ã‚Â¶ÃƒÂ©Ã¢â‚¬â€�Ã‚Â´ .5ÃƒÂ§Ã‚Â§Ã¢â‚¬â„¢
+			data.eyeTime = .5;
+			*/
+			//var data='{"eyey":18.65,"eyeTime":0.5,"type":"alleye","eyex":17.8,"eyes":1}'
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.eyeMove(value)
+		}
+		
+		function robotInit(){
+			alert('swf loadend');
+			JSInterface.initCompleted();
+		}
+		
+		/***
+		* ÃƒÂ¨Ã‚Â§Ã¢â‚¬â„¢ÃƒÂ¥Ã‚ÂºÃ‚Â¦ ÃƒÂ¥Ã¯Â¿Â½Ã…Â ÃƒÂ¥Ã‚Â¾Ã¢â‚¬Å¾ ÃƒÂ¦Ã…Â½Ã‚Â§ÃƒÂ¥Ã‹â€ Ã‚Â¶ÃƒÂ§Ã…â€œÃ‚Â¼ÃƒÂ§Ã¯Â¿Â½Ã¢â‚¬Âº
+		*/
+		function eyeMoveCircle(value){
+			/**
+			data.type = 'alleye';
+			data.radius = 0-30
+			data.angle = 0
+			data.eyes = 1;
+			data.eyeTime = .5;
+			*/
+			var data='{"type":"alleye","eyes":1,"angle":0,"radius":15,"eyeTime":0.5}'
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.eyeMoveCircle(data)
+		}
+		
+		/**
+		* ÃƒÂ¨Ã‚Â¯Ã‚Â´ÃƒÂ¨Ã‚Â¯Ã¯Â¿Â½ÃƒÂ¦Ã‚Â¬Ã‚Â¡ÃƒÂ¦Ã¢â‚¬Â¢Ã‚Â°
+		*/
+		function mouthTalk(value){
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.mouthTalk(value)
+		}
+		/**
+		* ÃƒÂ¤Ã‚Â½Ã‚Â¿ÃƒÂ§Ã¢â‚¬ï¿½Ã‚Â¨ÃƒÂ¥Ã‚Â£Ã‚Â°ÃƒÂ©Ã…Â¸Ã‚Â³ÃƒÂ¦Ã…Â½Ã‚Â§ÃƒÂ¥Ã‹â€ Ã‚Â¶ÃƒÂ¨Ã‚Â¯Ã‚Â´ÃƒÂ¨Ã‚Â¯Ã¯Â¿Â½
+		*/
+		function mouthSound(value){
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.mouthSound('true')
+		}
+	</script>
+
+</head>
+<body>
+
+	<h1>Tele-Presence Robot Client</h1>	
+	<table>
+	<tr>
+	<td width="50%">
+	<h2>Video</h2>
+	<!-- START OF THE PLAYER EMBEDDING TO COPY-PASTE -->
+	<object id="player" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" name="player" width="640" height="480"> 
+		<param name="movie" value="player2.swf" /> 
+		<param name="allowfullscreen" value="true" /> 
+		<param name="allowscriptaccess" value="always" /> 
+		<param name="flashvars" value="file=live.flv&bufferlength=0&autostart=true" /> 		
+		<embed 
+			type="application/x-shockwave-flash"
+			id="player2"
+			name="player2"
+			src="player2.swf" 
+			width="640" 
+			height="480"
+			allowscriptaccess="always" 
+			allowfullscreen="true"
+			flashvars="file=live.flv&bufferlength=0&autostart=true" 
+		/> 
+	</object> 
+	<h3>Author:	 achang.zhou@gmail.com  copyright  <a href="www.appdh.com" >www.appdh.com</a> </h3>
+	<!-- END OF THE PLAYER EMBEDDING -->
+	</td>
+	<td width="50%">
+	<h2>Controller</h2>
+	<div id="robotControler">
+	</div>
+	</td>
+	</table>
+</body>
+</html>

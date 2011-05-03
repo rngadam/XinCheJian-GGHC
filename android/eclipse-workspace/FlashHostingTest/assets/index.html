@@ -1,0 +1,109 @@
+Ã¯Â»Â¿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>HTC</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	
+	<script src="js/swfobject.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var flashvars = {
+		};
+		var params = {
+			menu: "false",
+			scale: "noScale",
+			allowFullscreen: "true",
+			allowScriptAccess: "always",
+			bgcolor: "#FFFFFF"
+		};
+		var attributes = {
+			id:"altContent"
+		};
+		swfobject.embedSWF("robotFace.swf", "altContent", "400", "300", "10.0.0", "expressInstall.swf", flashvars, params, attributes);
+		
+		var attributes = {
+			id:"robotControler"
+		};
+		swfobject.embedSWF("robotAir.swf", "robotControler", "600", "350", "10.0.0", "expressInstall.swf", flashvars, params, attributes);
+		/***
+		* Ã¤Â½Â¿Ã§â€�Â¨Ã¥ï¿½ï¿½Ã¦Â â€¡ Ã¦Å½Â§Ã¥Ë†Â¶Ã§Å“Â¼Ã§ï¿½â€º
+		*/
+		function eyeMove(value){
+			/**
+			// alleye (default)2Ã¥ï¿½ÂªÃ§Å“Â¼ leye Ã¥Â·Â¦Ã§Å“Â¼ reye Ã¥ï¿½Â³Ã§Å“Â¼
+			data.type = alleye;
+			//Ã§Å“Â¼Ã§ï¿½â€ºÃ§Â§Â»Ã¥Å Â¨Ã§Å¡â€žÃ¥ï¿½ï¿½Ã¦Â â€¡
+			data.eyex = 0;
+			data.eyey = 0;
+			//Ã§Å“Â¼Ã§ï¿½â€ºÃ¦Â¯â€�Ã¤Â¾â€¹ 0.1-2
+			data.eyes = 1;
+			//Ã§Â§Â»Ã¥Å Â¨Ã¦â€”Â¶Ã©â€”Â´ .5Ã§Â§â€™
+			data.eyeTime = .5;
+			*/
+			//var data='{"eyey":18.65,"eyeTime":0.5,"type":"alleye","eyex":17.8,"eyes":1}'
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.eyeMove(value)
+		}
+		
+		function robotInit(){
+			alert('swf loadend');
+			JSInterface.initCompleted();
+		}
+		
+		/***
+		* Ã¨Â§â€™Ã¥ÂºÂ¦ Ã¥ï¿½Å Ã¥Â¾â€ž Ã¦Å½Â§Ã¥Ë†Â¶Ã§Å“Â¼Ã§ï¿½â€º
+		*/
+		function eyeMoveCircle(value){
+			/**
+			data.type = 'alleye';
+			data.radius = 0-30
+			data.angle = 0
+			data.eyes = 1;
+			data.eyeTime = .5;
+			*/
+			var data='{"type":"alleye","eyes":1,"angle":0,"radius":15,"eyeTime":0.5}'
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.eyeMoveCircle(data)
+		}
+		
+		/**
+		* Ã¨Â¯Â´Ã¨Â¯ï¿½Ã¦Â¬Â¡Ã¦â€¢Â°
+		*/
+		function mouthTalk(value){
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.mouthTalk(value)
+		}
+		/**
+		* Ã¤Â½Â¿Ã§â€�Â¨Ã¥Â£Â°Ã©Å¸Â³Ã¦Å½Â§Ã¥Ë†Â¶Ã¨Â¯Â´Ã¨Â¯ï¿½
+		*/
+		function mouthSound(value){
+			var flashTarget=swfobject.getObjectById("altContent");
+			flashTarget.mouthSound('true')
+		}
+	</script>
+	<style type="text/css">
+		html, body { height:100%; overflow:hidden; }
+		body { margin:0; }
+	</style>
+</head>
+<body>
+	<div id="altContent">
+		<h1>HTC</h1>
+		<p>Alternative content</p>
+		<p><a href="http://www.adobe.com/go/getflashplayer"><img 
+			src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" 
+			alt="Get Adobe Flash player" /></a></p>
+	</div>
+	<p onclick="eyeMove('1')">eyeMove</p>
+	<p onclick="eyeMoveCircle('1')">eyeMoveCircle</p>
+	<p onclick="mouthTalk('1')">mouthTalk</p>
+	<p onclick="mouthSound('3')">mouthSound</p>
+	
+	<div id="robotControler">
+		<h1>Robot</h1>
+	</div>
+	
+</body>
+</html>

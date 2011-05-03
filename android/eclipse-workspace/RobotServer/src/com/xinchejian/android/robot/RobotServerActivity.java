@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appdh.webcamera.CameraView;
+import com.appdh.webcamera.Resources;
 import com.appdh.webcamera.StreamingServer;
 import com.xinchejian.android.bluetooth.Bluetooth;
 import com.xinchejian.android.bluetooth.RobotControl;
@@ -140,13 +141,15 @@ public class RobotServerActivity extends Activity {
 	};
 	protected String streamingWebServerUrl;
 	private Thread streamingServerThread;
+
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		// View
 		LinearLayout main = new LinearLayout(this);
 		setContentView(main);
@@ -172,7 +175,7 @@ public class RobotServerActivity extends Activity {
 		serverThread = new Thread(robotControlServer);
 		serverThread.start();
 		
-		streamingServer = new StreamingServer("/sdcard/robot/autodetection_mp4", streamingHandler);
+		streamingServer = new StreamingServer(this, "/sdcard/robot/autodetection_mp4", streamingHandler);
 		streamingServer.setCameraView(cameraView);
 		streamingServerThread = new Thread(streamingServer);
 		streamingServerThread.start();
