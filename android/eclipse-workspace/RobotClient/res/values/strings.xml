@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Robot Client</string>
+    <string name="Sideways">Sideways</string>
+    <string name="UpDown">Up and Down</string>
+    <string name="app_name_server">Robot Control Client</string>
+    <string name="app_name_client">Robot Control Server</string>
+</resources>

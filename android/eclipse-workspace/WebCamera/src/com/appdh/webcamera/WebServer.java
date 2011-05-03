@@ -14,7 +14,6 @@ class WebServer implements Runnable{
 	/* Where worker threads stand idle */
     static Vector<Worker> threads = new Vector<Worker>();
     static Worker currentStreamingWorker = null;
-   
 
     /* timeout on client connections */
     int timeout = 5000;
