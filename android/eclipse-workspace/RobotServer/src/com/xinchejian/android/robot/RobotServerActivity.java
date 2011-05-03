@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -75,7 +76,14 @@ public class RobotServerActivity extends Activity {
 
 		@Override
 		public void onStreamingStarted() {
-			toast("Streaming started");						
+			toast("Streaming started");		
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					faceView.setVisibility(SurfaceView.VISIBLE);
+					cameraView.setVisibility(SurfaceView.INVISIBLE);
+				}
+			});
 		}
 
 		@Override
@@ -145,13 +153,15 @@ public class RobotServerActivity extends Activity {
 		robotControlServerView = new RobotControlServerView(this);
 		//main.addView(robotControlServerView);
 
-		//faceView = new FaceView(this);
-		//faceView.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-		//main.addView(faceView);
+		faceView = new FaceView(this);
+		faceView.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+		main.addView(faceView);
+		faceView.setVisibility(SurfaceView.INVISIBLE);
 		
 		cameraView = new CameraView(this);
 		cameraView.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
 		main.addView(cameraView);
+		cameraView.setVisibility(SurfaceView.VISIBLE);
 
 		// Servers
 		bluetooth = new Bluetooth(arduinoAddress);

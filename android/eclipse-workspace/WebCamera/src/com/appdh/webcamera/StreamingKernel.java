@@ -18,7 +18,7 @@ public class StreamingKernel implements Runnable
 	//internal video buffer and frame timing
 	static VideoBuffer videoBuffer = null;
 	static TimeStampEstimator frameTimeStamp = null;
-	public static final int MAX_FRAME_SIZE = 32384;
+	public static final int MAX_FRAME_SIZE = 65536;
 	public static final int TYPICAL_FRAME_SIZE = 4096;
 	private BufferedOutputStream localCopy;
 	private InputStream fis;
